@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_auth/supabase_auth.dart';
+import 'package:supabase_db/supabase_db.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -43,11 +44,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   _login() async {
-    var client = SupabaseAuthClient(auth: Supabase.instance.client.auth);
     try {
-      await client.signIn(
+      var auth_client = SupabaseAuthClient(auth: Supabase.instance.client.auth);
+      await auth_client.signIn(
           email: dotenv.get('EMAIL'), password: dotenv.get('PASSWORD'));
-    } catch (e) {}
+
+      var db_client =
+          await SupabaseDbClient(supabaseClient: Supabase.instance.client);
+      //await db_client.createAction();
+      var res = await db_client.getActions();
+    } catch (e) {
+      print('error');
+    }
   }
 
   @override

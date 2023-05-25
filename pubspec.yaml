@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   supabase_auth:
     path: packages/supabase_auth
+  supabase_db:
+    path: packages/supabase_db
 
 
   # The following adds the Cupertino Icons font to your application.
