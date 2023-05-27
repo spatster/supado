@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           await SupabaseDbClient(supabaseClient: Supabase.instance.client);
       //await db_client.createAction();
       var res = await db_client.getActions();
+      var i = 0;
     } catch (e) {
       print('error');
     }

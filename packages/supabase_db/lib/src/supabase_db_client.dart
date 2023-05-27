@@ -1,3 +1,4 @@
+import 'package:supabase_api/supabase_api.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// {@template supabase_database_exception}
@@ -30,7 +31,7 @@ class SupabaseUpdateUserFailure extends SupabaseDatabaseException {
 /// {@template supabase_database_client}
 /// Supabase database client
 /// {@endtemplate}
-class SupabaseDbClient {
+class SupabaseDbClient implements SupabaseApi {
   /// {@macro supabase_database_client}
   const SupabaseDbClient({
     required SupabaseClient supabaseClient,
@@ -38,12 +39,10 @@ class SupabaseDbClient {
 
   final SupabaseClient _supabaseClient;
 
-  /// Method to get the user information by id
-  /// from the profiles database on Supabase.
-  Future<dynamic> getActions() async {
+  @override
+  Future<List<Map<dynamic, dynamic>>> getActions() async {
     try {
-      final response = await _supabaseClient.from('actions').select();
-      return response;
+      return await _supabaseClient.from('actions').select();
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         SupabaseUserInformationFailure(error),
@@ -52,7 +51,8 @@ class SupabaseDbClient {
     }
   }
 
-  Future<dynamic> createAction() async {
+  @override
+  Future createAction() async {
     try {
       await _supabaseClient.from('actions').insert({'name': 'test'});
     } catch (error, stackTrace) {

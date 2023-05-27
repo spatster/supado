@@ -469,6 +469,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  supabase_api:
+    dependency: transitive
+    description:
+      path: "packages/supabase_api"
+      relative: true
+    source: path
+    version: "1.0.0"
   supabase_auth:
     dependency: "direct main"
     description:
@@ -482,7 +489,7 @@ packages:
       path: "packages/supabase_db"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "0.0.0"
   supabase_flutter:
     dependency: "direct main"
     description:
