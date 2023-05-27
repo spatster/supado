@@ -1,4 +1,4 @@
 abstract class SupabaseApi {
-  Future<List<Map<dynamic, dynamic>>> getActions();
+  Future<List<Map<String, dynamic>>> getActions();
   Future createAction();
 }

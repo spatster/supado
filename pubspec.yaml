@@ -34,12 +34,18 @@ dependencies:
     path: packages/supabase_auth
   supabase_db:
     path: packages/supabase_db
+  actions_repository:
+    path: packages/actions_repository
+  domain_models:
+    path: packages/domain_models
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   supabase_flutter: 1.10.0
+  go_router: ^7.1.1
+  flutter_bloc: ^8.1.3
 
 dev_dependencies:
   flutter_test:

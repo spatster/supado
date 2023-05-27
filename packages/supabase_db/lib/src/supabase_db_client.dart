@@ -40,7 +40,7 @@ class SupabaseDbClient implements SupabaseApi {
   final SupabaseClient _supabaseClient;
 
   @override
-  Future<List<Map<dynamic, dynamic>>> getActions() async {
+  Future<List<Map<String, dynamic>>> getActions() async {
     try {
       return await _supabaseClient.from('actions').select();
     } catch (error, stackTrace) {
