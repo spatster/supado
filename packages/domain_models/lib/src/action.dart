@@ -5,18 +5,23 @@ part 'action.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class ActionX extends Equatable {
+  @JsonKey(includeIfNull: false)
   final int? id;
-  final DateTime createdAt;
+  @JsonKey(includeIfNull: false)
+  final DateTime? createdAt;
   final String name;
+  @JsonKey(includeIfNull: false)
   final String? description;
   final bool isFavourite;
+  final int indexNumber;
 
   ActionX({
     this.id,
-    required this.createdAt,
+    this.createdAt,
     required this.name,
-    required this.description,
-    required this.isFavourite,
+    this.description,
+    this.isFavourite = false,
+    this.indexNumber = -1,
   });
 
   factory ActionX.fromJson(Map<String, dynamic> json) =>
@@ -25,12 +30,6 @@ class ActionX extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      id,
-      createdAt,
-      name,
-      description,
-      isFavourite,
-    ];
+    return [id, createdAt, name, description, isFavourite, indexNumber];
   }
 }

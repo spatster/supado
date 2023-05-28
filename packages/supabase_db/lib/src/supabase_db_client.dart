@@ -52,9 +52,24 @@ class SupabaseDbClient implements SupabaseApi {
   }
 
   @override
-  Future createAction() async {
+  Future createAction(Map<String, dynamic> action) async {
     try {
-      await _supabaseClient.from('actions').insert({'name': 'test'});
+      await _supabaseClient.from('actions').insert(action);
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        SupabaseUserInformationFailure(error),
+        stackTrace,
+      );
+    }
+  }
+
+  @override
+  Future upsertActions(List<Map<String, dynamic>> actions) async {
+    try {
+      for (var action in actions) {
+        await _supabaseClient.from('actions').update(
+            {'index_number': action['index_number']}).eq('id', action['id']);
+      }
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         SupabaseUserInformationFailure(error),
