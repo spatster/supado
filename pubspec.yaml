@@ -1,4 +1,4 @@
-name: supafluttodo
+name: supado
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -32,12 +32,10 @@ dependencies:
     sdk: flutter
   supabase_auth:
     path: packages/supabase_auth
-  supabase_db:
-    path: packages/supabase_db
-  actions_repository:
-    path: packages/actions_repository
-  domain_models:
-    path: packages/domain_models
+  supado_api_db:
+    path: packages/supado_api_db
+  projects_repository:
+    path: packages/projects_repository
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,4 +1,4 @@
-# supafluttodo
+# supado
 
 A new Flutter project.
 

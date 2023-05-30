@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'action.g.dart';
+part 'project.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class ActionX extends Equatable {
+class Project extends Equatable {
   @JsonKey(includeIfNull: false)
   final int? id;
   @JsonKey(includeIfNull: false)
@@ -15,7 +15,7 @@ class ActionX extends Equatable {
   final bool isFavourite;
   final int indexNumber;
 
-  ActionX({
+  Project({
     this.id,
     this.createdAt,
     required this.name,
@@ -24,9 +24,9 @@ class ActionX extends Equatable {
     this.indexNumber = -1,
   });
 
-  factory ActionX.fromJson(Map<String, dynamic> json) =>
-      _$ActionXFromJson(json);
-  Map<String, dynamic> toJson() => _$ActionXToJson(this);
+  factory Project.fromJson(Map<String, dynamic> json) =>
+      _$ProjectFromJson(json);
+  Map<String, dynamic> toJson() => _$ProjectToJson(this);
 
   @override
   List<Object?> get props {

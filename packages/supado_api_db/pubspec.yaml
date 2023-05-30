@@ -1,4 +1,4 @@
-name: supabase_db
+name: supado_api_db
 description: A starting point for Dart libraries or applications.
 
 
@@ -7,10 +7,9 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  supabase_api:
-    path: ../supabase_api
+  supado_api:
+    path: ../supado_api
   supabase_flutter: 1.10.0
-  # path: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0

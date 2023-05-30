@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'action.dart';
+part of 'project.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ActionX _$ActionXFromJson(Map<String, dynamic> json) => ActionX(
+Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
       id: json['id'] as int?,
       createdAt: json['created_at'] == null
           ? null
@@ -17,7 +17,7 @@ ActionX _$ActionXFromJson(Map<String, dynamic> json) => ActionX(
       indexNumber: json['index_number'] as int? ?? -1,
     );
 
-Map<String, dynamic> _$ActionXToJson(ActionX instance) {
+Map<String, dynamic> _$ProjectToJson(Project instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

@@ -1,9 +1,9 @@
-import 'package:actions_repository/actions_repository.dart';
-import 'package:domain_models/domain_models.dart';
+import 'package:projects_repository/projects_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supafluttodo/pages/home/cubit/actions_cubit.dart';
+import 'package:supado/pages/home/cubit/projects_cubit.dart';
+import 'package:supado_api/supado_api.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -15,11 +15,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  ActionX? selectedAction;
+  Project? selectedProject;
 
-  void _onEdit(ActionX action) {
-    var cubit = context.read<ActionsCubit>();
-    cubit.createAction(action);
+  void _onEdit(Project project) {
+    var cubit = context.read<ProjectsCubit>();
+    cubit.createProject(project);
   }
 
   void _showSheet() async {
@@ -27,17 +27,17 @@ class _HomeViewState extends State<HomeView> {
       context: context,
       isScrollControlled: true, // set this to true
       builder: (_) {
-        return EditAction(selectedAction: selectedAction, onEdit: _onEdit);
+        return EditProject(selectedProject: selectedProject, onEdit: _onEdit);
       },
     );
     setState(() {
-      selectedAction = null;
+      selectedProject = null;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var actions = context.watch<ActionsCubit>().state.actions;
+    var projects = context.watch<ProjectsCubit>().state.projects;
 
     return Scaffold(
       appBar: AppBar(),
@@ -70,16 +70,16 @@ class _HomeViewState extends State<HomeView> {
                   child: Text('Logout')),
               Expanded(
                 child: ReorderableListView.builder(
-                  itemCount: actions.length,
+                  itemCount: projects.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Column(
                       key: Key('$index'),
                       children: [
                         ListTile(
-                          title: Text(actions[index].name),
+                          title: Text(projects[index].name),
                           onTap: () {
                             setState(() {
-                              selectedAction = actions[index];
+                              selectedProject = projects[index];
                             });
                             _showSheet();
                           },
@@ -90,11 +90,11 @@ class _HomeViewState extends State<HomeView> {
                   },
                   onReorder: (oldIndex, newIndex) async {
                     if (newIndex > oldIndex) newIndex--;
-                    var newList = List<ActionX>.from(actions);
+                    var newList = List<Project>.from(projects);
                     final item = newList.removeAt(oldIndex);
                     newList.insert(newIndex, item);
-                    var repository = context.read<ActionsRepository>();
-                    await repository.updateActionsOrder(newList);
+                    var repository = context.read<ProjectsRepository>();
+                    await repository.updateProjectsOrder(newList);
                     //await load();
                   },
                 ),
@@ -107,17 +107,17 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-class EditAction extends StatefulWidget {
-  EditAction({super.key, this.selectedAction, required this.onEdit});
+class EditProject extends StatefulWidget {
+  EditProject({super.key, this.selectedProject, required this.onEdit});
 
-  final ActionX? selectedAction;
+  final Project? selectedProject;
   final Function onEdit;
 
   @override
-  State<EditAction> createState() => _EditActionState();
+  State<EditProject> createState() => _EditProjectState();
 }
 
-class _EditActionState extends State<EditAction> {
+class _EditProjectState extends State<EditProject> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController nameInputController;
@@ -126,9 +126,9 @@ class _EditActionState extends State<EditAction> {
   @override
   void initState() {
     nameInputController =
-        TextEditingController(text: widget.selectedAction?.name ?? '');
+        TextEditingController(text: widget.selectedProject?.name ?? '');
     descriptionInputController =
-        TextEditingController(text: widget.selectedAction?.description ?? '');
+        TextEditingController(text: widget.selectedProject?.description ?? '');
 
     super.initState();
   }
@@ -185,7 +185,7 @@ class _EditActionState extends State<EditAction> {
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                             decoration: const InputDecoration.collapsed(
-                              hintText: 'Action name',
+                              hintText: 'Project name',
                               hintStyle: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
@@ -205,12 +205,12 @@ class _EditActionState extends State<EditAction> {
                               ElevatedButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    var newAction = ActionX(
+                                    var newProject = Project(
                                         name: nameInputController.text,
                                         description:
                                             descriptionInputController.text);
 
-                                    widget.onEdit(newAction);
+                                    widget.onEdit(newProject);
                                   }
                                 },
                                 child: Icon(Icons.send),

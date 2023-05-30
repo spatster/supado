@@ -5,20 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "supafluttodo",
+            "name": "supado",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
             "program": "lib/main.dart"
         },
         {
-            "name": "supafluttodo (profile mode)",
+            "name": "supado (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "supafluttodo (release mode)",
+            "name": "supado (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

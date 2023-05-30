@@ -1,5 +1,5 @@
-import 'package:supabase_api/supabase_api.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supado_api/supado_api.dart';
 
 /// {@template supabase_database_exception}
 /// A generic supabase database exception.
@@ -31,18 +31,20 @@ class SupabaseUpdateUserFailure extends SupabaseDatabaseException {
 /// {@template supabase_database_client}
 /// Supabase database client
 /// {@endtemplate}
-class SupabaseDbClient implements SupabaseApi {
+class SupadoApiDb implements SupadoApi {
   /// {@macro supabase_database_client}
-  const SupabaseDbClient({
+  const SupadoApiDb({
     required SupabaseClient supabaseClient,
   }) : _supabaseClient = supabaseClient;
 
   final SupabaseClient _supabaseClient;
 
   @override
-  Future<List<Map<String, dynamic>>> getActions() async {
+  Future<List<Project>> getProjects() async {
     try {
-      return await _supabaseClient.from('actions').select();
+      List<Map<String, dynamic>> res =
+          await _supabaseClient.from('projects').select();
+      return res.map((a) => Project.fromJson(a)).toList();
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         SupabaseUserInformationFailure(error),
@@ -52,9 +54,9 @@ class SupabaseDbClient implements SupabaseApi {
   }
 
   @override
-  Future createAction(Map<String, dynamic> action) async {
+  Future createProject(Project project) async {
     try {
-      await _supabaseClient.from('actions').insert(action);
+      await _supabaseClient.from('projects').insert(project.toJson());
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         SupabaseUserInformationFailure(error),
@@ -64,17 +66,18 @@ class SupabaseDbClient implements SupabaseApi {
   }
 
   @override
-  Future upsertActions(List<Map<String, dynamic>> actions) async {
-    try {
-      for (var action in actions) {
-        await _supabaseClient.from('actions').update(
-            {'index_number': action['index_number']}).eq('id', action['id']);
+  Future upsertProjects(List<Project> projects) async {
+    /*try {
+      for (var p in projects) {
+        await _supabaseClient
+            .from('projects')
+            .update({'index_number': p['index_number']}).eq('id', p['id']);
       }
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         SupabaseUserInformationFailure(error),
         stackTrace,
       );
-    }
+    }*/
   }
 }

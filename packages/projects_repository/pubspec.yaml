@@ -1,0 +1,15 @@
+name: projects_repository
+description: Projects repository
+publish_to: none
+
+environment:
+  sdk: ^3.0.2
+
+dependencies:
+  supado_api:
+    path: ../supado_api
+
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0

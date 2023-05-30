@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:supafluttodo/pages/home/home_page.dart';
+import 'package:supado/pages/home/home_page.dart';
 
 final supabase = Supabase.instance.client;
 
