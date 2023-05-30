@@ -1,20 +1,20 @@
-import 'package:projects_repository/projects_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_list/src/cubit/projects_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:projects_repository/projects_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supado/pages/home/cubit/projects_cubit.dart';
 import 'package:supado_api/supado_api.dart';
 
 final supabase = Supabase.instance.client;
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class ProjectListView extends StatefulWidget {
+  const ProjectListView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<ProjectListView> createState() => _ProjectListViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ProjectListViewState extends State<ProjectListView> {
   Project? selectedProject;
 
   void _onEdit(Project project) {

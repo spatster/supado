@@ -13,7 +13,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
 
   loadProjects() async {
     var res = await repository.getProjects();
-    res.sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
+    res.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
     emit(state.copyWith(projects: res));
   }
 

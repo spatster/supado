@@ -36,6 +36,8 @@ dependencies:
     path: packages/supado_api_db
   projects_repository:
     path: packages/projects_repository
+  project_list:
+    path: packages/features/project_list
 
 
   # The following adds the Cupertino Icons font to your application.

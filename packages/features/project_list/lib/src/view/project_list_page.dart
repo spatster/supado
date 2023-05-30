@@ -1,12 +1,11 @@
-import 'package:projects_repository/projects_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supado/pages/home/cubit/projects_cubit.dart';
-import 'package:supado/pages/home/home_view.dart';
+import 'package:project_list/src/cubit/projects_cubit.dart';
+import 'package:project_list/src/view/project_list_view.dart';
+import 'package:projects_repository/projects_repository.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class ProjectListPage extends StatelessWidget {
+  const ProjectListPage({super.key});
   static const route = '/';
 
   @override
@@ -15,7 +14,7 @@ class HomePage extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => ProjectsCubit(repository)..loadProjects(),
-      child: HomeView(),
+      child: ProjectListView(),
     );
   }
 }
