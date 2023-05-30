@@ -14,6 +14,10 @@ class ProjectsRepository {
     await api.createProject(project);
   }
 
+  Future createSubtask(Subtask subtack) async {
+    await api.createSubtask(subtack);
+  }
+
   Future deleteProject(int id) async {
     await api.deleteProject(id);
   }

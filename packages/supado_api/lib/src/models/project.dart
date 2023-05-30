@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:supado_api/supado_api.dart';
 
 part 'project.g.dart';
 
@@ -13,6 +14,7 @@ class Project extends Equatable {
   @JsonKey(includeIfNull: false)
   final String? description;
   final int indexNumber;
+  final List<Subtask> subtasks;
 
   Project({
     this.id,
@@ -20,6 +22,7 @@ class Project extends Equatable {
     required this.name,
     this.description,
     this.indexNumber = -1,
+    this.subtasks = const [],
   });
 
   factory Project.fromJson(Map<String, dynamic> json) =>

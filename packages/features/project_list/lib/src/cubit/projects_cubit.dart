@@ -22,6 +22,11 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     await loadProjects();
   }
 
+  createSubtask(Subtask subtask) async {
+    await repository.createSubtask(subtask);
+    await loadProjects();
+  }
+
   deleteProject(int id) async {
     await repository.deleteProject(id);
     var projects = state.projects.where((p) => p.id != id).toList();

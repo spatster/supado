@@ -5,4 +5,5 @@ abstract class SupadoApi {
   Future createProject(Project project);
   Future deleteProject(int id);
   Future upsertProjects(List<Project> projects);
+  Future createSubtask(Subtask task);
 }

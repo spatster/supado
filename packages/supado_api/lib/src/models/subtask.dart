@@ -10,11 +10,13 @@ class Subtask extends Equatable {
   @JsonKey(includeIfNull: false)
   final DateTime? createdAt;
   final String name;
+  final int projectId;
 
   Subtask({
     this.id,
     this.createdAt,
     required this.name,
+    required this.projectId,
   });
 
   factory Subtask.fromJson(Map<String, dynamic> json) =>
@@ -23,6 +25,6 @@ class Subtask extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, createdAt, name];
+    return [id, createdAt, name, projectId];
   }
 }

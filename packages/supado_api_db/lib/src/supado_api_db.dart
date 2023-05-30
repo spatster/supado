@@ -43,7 +43,7 @@ class SupadoApiDb implements SupadoApi {
   Future<List<Project>> getProjects() async {
     try {
       List<Map<String, dynamic>> res =
-          await _supabaseClient.from('projects').select();
+          await _supabaseClient.from('projects').select('*, subtasks(*)');
       return res.map((a) => Project.fromJson(a)).toList();
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
@@ -57,6 +57,18 @@ class SupadoApiDb implements SupadoApi {
   Future createProject(Project project) async {
     try {
       await _supabaseClient.from('projects').insert(project.toJson());
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        SupabaseUserInformationFailure(error),
+        stackTrace,
+      );
+    }
+  }
+
+  @override
+  Future createSubtask(Subtask task) async {
+    try {
+      await _supabaseClient.from('subtasks').insert(task.toJson());
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         SupabaseUserInformationFailure(error),

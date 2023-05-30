@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_list/src/components/create_project.dart';
+import 'package:project_list/src/components/edit_project.dart';
 import 'package:project_list/src/components/project_tile.dart';
 import 'package:project_list/src/cubit/projects_cubit.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +21,16 @@ class _ProjectListViewState extends State<ProjectListView> {
   Project? selectedProject;
 
   void _showSheet() async {
+    var widget = selectedProject != null
+        ? EditProject(selectedProject: selectedProject!)
+        : CreateProject();
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true, // set this to true
       builder: (_) {
         return BlocProvider.value(
           value: BlocProvider.of<ProjectsCubit>(context),
-          child: CreateProject(),
+          child: widget,
         );
       },
     );
