@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_list/src/components/create_project.dart';
+import 'package:project_list/src/components/project_tile.dart';
 import 'package:project_list/src/cubit/projects_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:projects_repository/projects_repository.dart';
@@ -17,17 +19,15 @@ class ProjectListView extends StatefulWidget {
 class _ProjectListViewState extends State<ProjectListView> {
   Project? selectedProject;
 
-  void _onEdit(Project project) {
-    var cubit = context.read<ProjectsCubit>();
-    cubit.createProject(project);
-  }
-
   void _showSheet() async {
-    var res = await showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true, // set this to true
       builder: (_) {
-        return EditProject(selectedProject: selectedProject, onEdit: _onEdit);
+        return BlocProvider.value(
+          value: BlocProvider.of<ProjectsCubit>(context),
+          child: CreateProject(),
+        );
       },
     );
     setState(() {
@@ -40,7 +40,22 @@ class _ProjectListViewState extends State<ProjectListView> {
     var projects = context.watch<ProjectsCubit>().state.projects;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () async {
+                await supabase.auth.signOut();
+              },
+              child: Icon(
+                Icons.exit_to_app,
+                size: 26.0,
+              ),
+            ),
+          )
+        ],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -63,29 +78,27 @@ class _ProjectListViewState extends State<ProjectListView> {
         children: [
           Column(
             children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    await supabase.auth.signOut();
-                  },
-                  child: Text('Logout')),
               Expanded(
                 child: ReorderableListView.builder(
                   itemCount: projects.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
+                    var project = projects[index];
+                    return ProjectTileSlidable(
                       key: Key('$index'),
-                      children: [
-                        ListTile(
-                          title: Text(projects[index].name),
-                          onTap: () {
-                            setState(() {
-                              selectedProject = projects[index];
-                            });
-                            _showSheet();
-                          },
-                        ),
-                        const Divider(),
-                      ],
+                      onDelete: () async {
+                        context
+                            .read<ProjectsCubit>()
+                            .deleteProject(project.id!);
+                      },
+                      child: ProjectTile(
+                        project: project,
+                        onTap: () {
+                          setState(() {
+                            selectedProject = project;
+                          });
+                          _showSheet();
+                        },
+                      ),
                     );
                   },
                   onReorder: (oldIndex, newIndex) async {
@@ -95,7 +108,6 @@ class _ProjectListViewState extends State<ProjectListView> {
                     newList.insert(newIndex, item);
                     var repository = context.read<ProjectsRepository>();
                     await repository.updateProjectsOrder(newList);
-                    //await load();
                   },
                 ),
               ),
@@ -103,130 +115,6 @@ class _ProjectListViewState extends State<ProjectListView> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class EditProject extends StatefulWidget {
-  EditProject({super.key, this.selectedProject, required this.onEdit});
-
-  final Project? selectedProject;
-  final Function onEdit;
-
-  @override
-  State<EditProject> createState() => _EditProjectState();
-}
-
-class _EditProjectState extends State<EditProject> {
-  final _formKey = GlobalKey<FormState>();
-
-  late final TextEditingController nameInputController;
-  late final TextEditingController descriptionInputController;
-
-  @override
-  void initState() {
-    nameInputController =
-        TextEditingController(text: widget.selectedProject?.name ?? '');
-    descriptionInputController =
-        TextEditingController(text: widget.selectedProject?.description ?? '');
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      minChildSize: 0.5,
-      maxChildSize: 0.9,
-      initialChildSize: 0.5,
-      expand: false,
-      builder: (_, controller) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    height: 4,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView(
-                  controller: controller,
-                  children: [
-                    const SizedBox(height: 5),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextFormField(
-                            controller: nameInputController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            // The validator receives the text that the user has entered.
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                            decoration: const InputDecoration.collapsed(
-                              hintText: 'Project name',
-                              hintStyle: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            controller: descriptionInputController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            decoration: const InputDecoration.collapsed(
-                                hintText: 'Description'),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    var newProject = Project(
-                                        name: nameInputController.text,
-                                        description:
-                                            descriptionInputController.text);
-
-                                    widget.onEdit(newProject);
-                                  }
-                                },
-                                child: Icon(Icons.send),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

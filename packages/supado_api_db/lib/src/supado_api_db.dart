@@ -66,6 +66,11 @@ class SupadoApiDb implements SupadoApi {
   }
 
   @override
+  Future deleteProject(int id) async {
+    await _supabaseClient.from('projects').delete().eq('id', id);
+  }
+
+  @override
   Future upsertProjects(List<Project> projects) async {
     /*try {
       for (var p in projects) {

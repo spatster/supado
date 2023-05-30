@@ -21,4 +21,10 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     await repository.createProject(project);
     await loadProjects();
   }
+
+  deleteProject(int id) async {
+    await repository.deleteProject(id);
+    var projects = state.projects.where((p) => p.id != id).toList();
+    emit(state.copyWith(projects: projects));
+  }
 }

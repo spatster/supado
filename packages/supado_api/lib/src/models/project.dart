@@ -12,7 +12,6 @@ class Project extends Equatable {
   final String name;
   @JsonKey(includeIfNull: false)
   final String? description;
-  final bool isFavourite;
   final int indexNumber;
 
   Project({
@@ -20,7 +19,6 @@ class Project extends Equatable {
     this.createdAt,
     required this.name,
     this.description,
-    this.isFavourite = false,
     this.indexNumber = -1,
   });
 
@@ -30,6 +28,6 @@ class Project extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, createdAt, name, description, isFavourite, indexNumber];
+    return [id, createdAt, name, description, indexNumber];
   }
 }

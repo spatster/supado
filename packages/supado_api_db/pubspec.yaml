@@ -9,7 +9,7 @@ environment:
 dependencies:
   supado_api:
     path: ../supado_api
-  supabase_flutter: 1.10.0
+  supabase_flutter: 1.10.1
 
 dev_dependencies:
   lints: ^2.0.0

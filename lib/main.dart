@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supado/app/app_router.dart';
 import 'package:supado/app/bloc/bloc_observer.dart';
-import 'package:supado_api/supado_api.dart';
 import 'package:supado_api_db/supado_api_db.dart';
 
 void main() async {
