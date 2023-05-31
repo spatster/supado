@@ -22,6 +22,10 @@ class ProjectsRepository {
     await api.deleteProject(id);
   }
 
+  Future updateSubtask(Subtask task) async {
+    await api.updateSubtask(task);
+  }
+
   Future updateProjectsOrder(List<Project> actions) async {
     List<Map<String, dynamic>> actionsIds = [];
     actions.forEachIndexed((index, a) {

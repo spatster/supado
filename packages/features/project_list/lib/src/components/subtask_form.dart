@@ -4,8 +4,9 @@ import 'package:project_list/src/cubit/projects_cubit.dart';
 import 'package:supado_api/supado_api.dart';
 
 class SubtaskForm extends StatefulWidget {
-  const SubtaskForm({super.key, required this.selectedProject});
+  const SubtaskForm({super.key, required this.selectedProject, this.onClose});
   final Project? selectedProject;
+  final VoidCallback? onClose;
 
   @override
   State<SubtaskForm> createState() => _SubtaskFormState();
@@ -38,22 +39,37 @@ class _SubtaskFormState extends State<SubtaskForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormField(
-            controller: nameInputController,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            // The validator receives the text that the user has entered.
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            decoration: const InputDecoration.collapsed(
-              hintText: 'Subtask name',
-              hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: nameInputController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  // The validator receives the text that the user has entered.
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                  decoration: const InputDecoration.collapsed(
+                    hintText: 'Subtask name',
+                    hintStyle:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+              ),
+              if (widget.onClose != null)
+                IconButton(
+                  onPressed: widget.onClose,
+                  icon: Icon(Icons.close),
+                  color: Colors.grey,
+                )
+            ],
           ),
           const SizedBox(height: 10),
           TextFormField(

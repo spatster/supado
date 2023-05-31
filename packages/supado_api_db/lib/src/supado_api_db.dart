@@ -78,6 +78,21 @@ class SupadoApiDb implements SupadoApi {
   }
 
   @override
+  Future updateSubtask(Subtask task) async {
+    try {
+      await _supabaseClient
+          .from('subtasks')
+          .update(task.toJson())
+          .eq('id', task.id);
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        SupabaseUserInformationFailure(error),
+        stackTrace,
+      );
+    }
+  }
+
+  @override
   Future deleteProject(int id) async {
     await _supabaseClient.from('projects').delete().eq('id', id);
   }

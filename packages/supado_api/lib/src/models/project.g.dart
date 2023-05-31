@@ -34,6 +34,5 @@ Map<String, dynamic> _$ProjectToJson(Project instance) {
   val['name'] = instance.name;
   writeNotNull('description', instance.description);
   val['index_number'] = instance.indexNumber;
-  val['subtasks'] = instance.subtasks;
   return val;
 }

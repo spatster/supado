@@ -32,4 +32,16 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     var projects = state.projects.where((p) => p.id != id).toList();
     emit(state.copyWith(projects: projects));
   }
+
+  changeSubtaskState(Subtask subtask) async {
+    try {
+      var s = subtask.copyWith();
+      s.changeStatus();
+      await repository.updateSubtask(s);
+      //Fix
+      await loadProjects();
+    } catch (e) {
+      //TODO: add handler
+    }
+  }
 }

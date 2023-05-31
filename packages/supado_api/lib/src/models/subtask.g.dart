@@ -13,6 +13,9 @@ Subtask _$SubtaskFromJson(Map<String, dynamic> json) => Subtask(
           : DateTime.parse(json['created_at'] as String),
       name: json['name'] as String,
       projectId: json['project_id'] as int,
+      finishedAt: json['finishedAt'] == null
+          ? null
+          : DateTime.parse(json['finishedAt'] as String),
     );
 
 Map<String, dynamic> _$SubtaskToJson(Subtask instance) {
@@ -28,5 +31,6 @@ Map<String, dynamic> _$SubtaskToJson(Subtask instance) {
   writeNotNull('created_at', instance.createdAt?.toIso8601String());
   val['name'] = instance.name;
   val['project_id'] = instance.projectId;
+  val['finishedAt'] = instance.finishedAt?.toIso8601String();
   return val;
 }

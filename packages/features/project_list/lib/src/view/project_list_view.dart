@@ -21,16 +21,15 @@ class _ProjectListViewState extends State<ProjectListView> {
   Project? selectedProject;
 
   void _showSheet() async {
-    var widget = selectedProject != null
-        ? EditProject(selectedProject: selectedProject!)
-        : CreateProject();
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true, // set this to true
       builder: (_) {
         return BlocProvider.value(
           value: BlocProvider.of<ProjectsCubit>(context),
-          child: widget,
+          child: selectedProject != null
+              ? EditProject(projectId: selectedProject!.id!)
+              : CreateProject(),
         );
       },
     );

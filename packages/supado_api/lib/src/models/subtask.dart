@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,12 +12,18 @@ class Subtask extends Equatable {
   final DateTime? createdAt;
   final String name;
   final int projectId;
+  DateTime? finishedAt;
+
+  changeStatus() {
+    finishedAt = finishedAt == null ? DateTime.now() : null;
+  }
 
   Subtask({
     this.id,
     this.createdAt,
     required this.name,
     required this.projectId,
+    this.finishedAt,
   });
 
   factory Subtask.fromJson(Map<String, dynamic> json) =>
@@ -25,6 +32,22 @@ class Subtask extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, createdAt, name, projectId];
+    return [id, createdAt, name, projectId, finishedAt];
+  }
+
+  Subtask copyWith({
+    int? id,
+    DateTime? createdAt,
+    String? name,
+    int? projectId,
+    DateTime? finished,
+  }) {
+    return Subtask(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      name: name ?? this.name,
+      projectId: projectId ?? this.projectId,
+      finishedAt: finished ?? this.finishedAt,
+    );
   }
 }

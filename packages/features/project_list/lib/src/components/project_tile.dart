@@ -1,19 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:project_list/src/components/subtasks_list.dart';
+import 'package:project_list/src/cubit/projects_cubit.dart';
 import 'package:supado_api/supado_api.dart';
 
-class ProjectTile extends StatelessWidget {
+class ProjectTile extends StatefulWidget {
   const ProjectTile({super.key, required this.project, required this.onTap});
   final Project project;
   final VoidCallback onTap;
+
+  @override
+  State<ProjectTile> createState() => _ProjectTileState();
+}
+
+class _ProjectTileState extends State<ProjectTile> {
+  bool expandSubtask = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
-          title: Text(project.name),
-          onTap: onTap,
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.project.name),
+                      if (widget.project.subtasks.length != 0)
+                        Row(
+                          children: [
+                            Icon(Icons.subdirectory_arrow_right),
+                            Text(
+                              '${widget.project.finishedSubtasksCount} / ${widget.project.subtasksCount}',
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        )
+                    ],
+                  ),
+                  IconButton(
+                    icon: Icon(
+                        expandSubtask ? Icons.expand_less : Icons.expand_more),
+                    onPressed: () {
+                      setState(() {
+                        expandSubtask = !expandSubtask;
+                      });
+                    },
+                  )
+                ],
+              ),
+              if (expandSubtask) SubtasksList(project: widget.project)
+            ],
+          ),
+          onTap: widget.onTap,
         ),
         const Divider(),
       ],
