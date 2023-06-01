@@ -14,6 +14,8 @@ class Subtask extends Equatable {
   final int projectId;
   DateTime? finishedAt;
 
+  bool get isFinished => finishedAt != null;
+
   changeStatus() {
     finishedAt = finishedAt == null ? DateTime.now() : null;
   }
@@ -40,14 +42,14 @@ class Subtask extends Equatable {
     DateTime? createdAt,
     String? name,
     int? projectId,
-    DateTime? finished,
+    DateTime? finishedAt,
   }) {
     return Subtask(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       name: name ?? this.name,
       projectId: projectId ?? this.projectId,
-      finishedAt: finished ?? this.finishedAt,
+      finishedAt: finishedAt ?? this.finishedAt,
     );
   }
 }

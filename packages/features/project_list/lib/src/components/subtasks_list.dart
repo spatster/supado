@@ -29,10 +29,19 @@ class SubtasksList extends StatelessWidget {
                     var projectCubit = context.read<ProjectsCubit>();
                     projectCubit.changeSubtaskState(subtask);
                   },
-                  icon: Icon(subtask.finishedAt == null
-                      ? Icons.radio_button_unchecked
-                      : Icons.task_alt)),
-              Text(subtask.name)
+                  icon: Icon(
+                    !subtask.isFinished
+                        ? Icons.radio_button_unchecked
+                        : Icons.task_alt,
+                    color: subtask.isFinished ? Colors.grey : null,
+                  )),
+              Text(
+                subtask.name,
+                style: TextStyle(
+                    color: subtask.isFinished ? Colors.grey : null,
+                    decoration:
+                        subtask.isFinished ? TextDecoration.lineThrough : null),
+              )
             ],
           );
         },

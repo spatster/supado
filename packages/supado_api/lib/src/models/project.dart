@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:supado_api/src/models/project_type.dart';
 import 'package:supado_api/supado_api.dart';
 
 part 'project.g.dart';
@@ -14,8 +15,12 @@ class Project extends Equatable {
   @JsonKey(includeIfNull: false)
   final String? description;
   final int indexNumber;
+  final int projectTypeId;
+
   @JsonKey(includeToJson: false)
   final List<Subtask> subtasks;
+  @JsonKey(includeToJson: false)
+  final ProjectType? projectType;
 
   int get subtasksCount => subtasks.length;
   int get finishedSubtasksCount => subtasks.length - unfinishedSubtasks.length;
@@ -37,7 +42,9 @@ class Project extends Equatable {
   Project({
     this.id,
     this.createdAt,
+    this.projectType,
     required this.name,
+    required this.projectTypeId,
     this.description,
     this.indexNumber = -1,
     this.subtasks = const [],
