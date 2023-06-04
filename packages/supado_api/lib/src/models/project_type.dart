@@ -9,13 +9,13 @@ part 'project_type.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
 class ProjectType extends Equatable {
   @JsonKey(includeIfNull: false)
-  final int? id;
+  final int id;
   @JsonKey(includeIfNull: false)
   final DateTime? createdAt;
   final String name;
 
   ProjectType({
-    this.id,
+    required this.id,
     this.createdAt,
     required this.name,
   });
@@ -24,4 +24,8 @@ class ProjectType extends Equatable {
   List<Object?> get props {
     return [id, createdAt, name];
   }
+
+  factory ProjectType.fromJson(Map<String, dynamic> json) =>
+      _$ProjectTypeFromJson(json);
+  Map<String, dynamic> toJson() => _$ProjectTypeToJson(this);
 }

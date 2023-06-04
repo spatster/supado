@@ -7,7 +7,7 @@ part of 'project_type.dart';
 // **************************************************************************
 
 ProjectType _$ProjectTypeFromJson(Map<String, dynamic> json) => ProjectType(
-      id: json['id'] as int?,
+      id: json['id'] as int,
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),

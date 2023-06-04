@@ -10,6 +10,10 @@ class ProjectsRepository {
     return await api.getProjects();
   }
 
+  Future<List<ProjectType>> getProjectTypes() async {
+    return await api.getProjectTypes();
+  }
+
   Future createProject(Project project) async {
     await api.createProject(project);
   }

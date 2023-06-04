@@ -7,28 +7,35 @@ import 'package:supado_api/supado_api.dart';
 part 'projects_state.dart';
 
 class ProjectsCubit extends Cubit<ProjectsState> {
-  ProjectsCubit(this.repository) : super(ProjectsState(projects: []));
+  ProjectsCubit(ProjectsRepository repository)
+      : _repository = repository,
+        super(ProjectsState(projects: []));
 
-  final ProjectsRepository repository;
+  final ProjectsRepository _repository;
 
   loadProjects() async {
-    var res = await repository.getProjects();
+    var res = await _repository.getProjects();
     res.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
     emit(state.copyWith(projects: res));
   }
 
+  loadProjectTypes() async {
+    var res = await _repository.getProjectTypes();
+    emit(state.copyWith(projectTypes: res));
+  }
+
   createProject(Project project) async {
-    await repository.createProject(project);
+    await _repository.createProject(project);
     await loadProjects();
   }
 
   createSubtask(Subtask subtask) async {
-    await repository.createSubtask(subtask);
+    await _repository.createSubtask(subtask);
     await loadProjects();
   }
 
   deleteProject(int id) async {
-    await repository.deleteProject(id);
+    await _repository.deleteProject(id);
     var projects = state.projects.where((p) => p.id != id).toList();
     emit(state.copyWith(projects: projects));
   }
@@ -37,7 +44,7 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     try {
       var s = subtask.copyWith();
       s.changeStatus();
-      await repository.updateSubtask(s);
+      await _repository.updateSubtask(s);
       //Fix
       await loadProjects();
     } catch (e) {

@@ -13,7 +13,9 @@ class ProjectListPage extends StatelessWidget {
     var repository = context.read<ProjectsRepository>();
 
     return BlocProvider(
-      create: (_) => ProjectsCubit(repository)..loadProjects(),
+      create: (_) => ProjectsCubit(repository)
+        ..loadProjectTypes()
+        ..loadProjects(),
       child: ProjectListView(),
     );
   }
