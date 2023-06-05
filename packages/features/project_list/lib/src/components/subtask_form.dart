@@ -4,8 +4,15 @@ import 'package:project_list/src/cubit/projects_cubit.dart';
 import 'package:supado_api/supado_api.dart';
 
 class SubtaskForm extends StatefulWidget {
-  const SubtaskForm({super.key, required this.selectedProject, this.onClose});
+  const SubtaskForm({
+    super.key,
+    required this.selectedProject,
+    this.subtask,
+    this.onClose,
+  });
+
   final Project? selectedProject;
+  final Subtask? subtask;
   final VoidCallback? onClose;
 
   @override
@@ -16,7 +23,6 @@ class _SubtaskFormState extends State<SubtaskForm> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController nameInputController;
-
   late final TextEditingController descriptionInputController;
 
   _resetForm() {
@@ -26,7 +32,8 @@ class _SubtaskFormState extends State<SubtaskForm> {
 
   @override
   void initState() {
-    nameInputController = TextEditingController(text: '');
+    nameInputController = TextEditingController(
+        text: widget.subtask != null ? widget.subtask!.name : '');
     descriptionInputController = TextEditingController(text: '');
 
     super.initState();
@@ -87,11 +94,17 @@ class _SubtaskFormState extends State<SubtaskForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     var newSubtask = Subtask(
-                        name: nameInputController.text,
-                        projectId: widget.selectedProject!.id!);
+                      name: nameInputController.text,
+                      projectId: widget.selectedProject!.id!,
+                      id: widget.subtask != null ? widget.subtask!.id : null,
+                    );
 
                     var cubit = context.read<ProjectsCubit>();
-                    cubit.createSubtask(newSubtask);
+                    if (widget.subtask == null) {
+                      cubit.createSubtask(newSubtask);
+                    } else {
+                      cubit.updateSubtask(newSubtask);
+                    }
                     _resetForm();
                   }
                 },

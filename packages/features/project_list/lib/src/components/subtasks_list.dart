@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_list/src/components/edit_task.dart';
 import 'package:project_list/src/components/project_tile.dart';
 import 'package:project_list/src/cubit/projects_cubit.dart';
 import 'package:supado_api/supado_api.dart';
@@ -9,6 +10,20 @@ class SubtasksList extends StatelessWidget {
 
   final Project project;
   final bool? showFinished;
+
+  _editTask(BuildContext context, Subtask subtask) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      barrierColor: Colors.transparent,
+      builder: (_) {
+        return BlocProvider.value(
+          value: BlocProvider.of<ProjectsCubit>(context),
+          child: EditTask(selectedProject: project, subtask: subtask),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +50,18 @@ class SubtasksList extends StatelessWidget {
                         : Icons.task_alt,
                     color: subtask.isFinished ? Colors.grey : null,
                   )),
-              Text(
-                subtask.name,
-                style: TextStyle(
-                    color: subtask.isFinished ? Colors.grey : null,
-                    decoration:
-                        subtask.isFinished ? TextDecoration.lineThrough : null),
+              GestureDetector(
+                onTap: () {
+                  _editTask(context, subtask);
+                },
+                child: Text(
+                  subtask.name,
+                  style: TextStyle(
+                      color: subtask.isFinished ? Colors.grey : null,
+                      decoration: subtask.isFinished
+                          ? TextDecoration.lineThrough
+                          : null),
+                ),
               )
             ],
           );
