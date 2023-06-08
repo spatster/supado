@@ -1,20 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'project_type.dart';
+part of 'project_status.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProjectType _$ProjectTypeFromJson(Map<String, dynamic> json) => ProjectType(
+ProjectStatus _$ProjectStatusFromJson(Map<String, dynamic> json) =>
+    ProjectStatus(
       id: json['id'] as int,
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
-      name: json['name'] as String,
+      startedAt: DateTime.parse(json['started_at'] as String),
+      finishedAt: json['finished_at'] == null
+          ? null
+          : DateTime.parse(json['finished_at'] as String),
+      description: json['description'] as String? ?? '',
     );
 
-Map<String, dynamic> _$ProjectTypeToJson(ProjectType instance) {
+Map<String, dynamic> _$ProjectStatusToJson(ProjectStatus instance) {
   final val = <String, dynamic>{
     'id': instance.id,
   };
@@ -26,6 +31,8 @@ Map<String, dynamic> _$ProjectTypeToJson(ProjectType instance) {
   }
 
   writeNotNull('created_at', instance.createdAt?.toIso8601String());
-  val['name'] = instance.name;
+  val['started_at'] = instance.startedAt.toIso8601String();
+  val['finished_at'] = instance.finishedAt?.toIso8601String();
+  val['description'] = instance.description;
   return val;
 }

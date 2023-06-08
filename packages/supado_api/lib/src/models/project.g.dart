@@ -22,6 +22,10 @@ Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
               ?.map((e) => Subtask.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      statuses: (json['statuses'] as List<dynamic>?)
+              ?.map((e) => ProjectStatus.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$ProjectToJson(Project instance) {

@@ -42,8 +42,9 @@ class SupadoApiDb implements SupadoApi {
   @override
   Future<List<Project>> getProjects() async {
     try {
-      List<Map<String, dynamic>> res =
-          await _supabaseClient.from('projects').select('*, subtasks(*)');
+      List<Map<String, dynamic>> res = await _supabaseClient
+          .from('projects')
+          .select('*, subtasks(*), project_statuses(*)');
       return res.map((a) => Project.fromJson(a)).toList();
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(

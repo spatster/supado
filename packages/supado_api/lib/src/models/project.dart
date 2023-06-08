@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:supado_api/src/models/project_status.dart';
 import 'package:supado_api/src/models/project_type.dart';
 import 'package:supado_api/supado_api.dart';
 
@@ -21,6 +22,9 @@ class Project extends Equatable {
   final List<Subtask> subtasks;
   @JsonKey(includeToJson: false)
   final ProjectType? projectType;
+
+  @JsonKey(includeToJson: false)
+  final List<ProjectStatus> statuses;
 
   int get subtasksCount => subtasks.length;
   int get finishedSubtasksCount => subtasks.length - unfinishedSubtasks.length;
@@ -48,6 +52,7 @@ class Project extends Equatable {
     this.description,
     this.indexNumber = -1,
     this.subtasks = const [],
+    this.statuses = const [],
   });
 
   factory Project.fromJson(Map<String, dynamic> json) =>
@@ -56,6 +61,6 @@ class Project extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, createdAt, name, description, indexNumber, subtasks];
+    return [id, createdAt, name, description, indexNumber, subtasks, statuses];
   }
 }

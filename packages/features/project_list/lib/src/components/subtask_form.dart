@@ -102,10 +102,10 @@ class _SubtaskFormState extends State<SubtaskForm> {
                     var cubit = context.read<ProjectsCubit>();
                     if (widget.subtask == null) {
                       cubit.createSubtask(newSubtask);
+                      _resetForm();
                     } else {
                       cubit.updateSubtask(newSubtask);
                     }
-                    _resetForm();
                   }
                 },
                 child: Icon(Icons.send),
