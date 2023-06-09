@@ -18,7 +18,7 @@ Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
       projectTypeId: json['project_type_id'] as int,
       description: json['description'] as String?,
       indexNumber: json['index_number'] as int? ?? -1,
-      subtasks: (json['subtasks'] as List<dynamic>?)
+      subtasks: (json['project_subtasks'] as List<dynamic>?)
               ?.map((e) => Subtask.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],

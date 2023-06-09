@@ -45,13 +45,38 @@ class _EditProjectState extends State<EditProject> {
                         Divider(),
                         SizedBox(height: 10),
                         if (!createTaskMode)
-                          GestureDetector(
-                            child: Text('+ Add subtask'),
-                            onTap: () {
-                              setState(() {
-                                createTaskMode = true;
-                              });
-                            },
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                child: Text('+ Add subtask'),
+                                onTap: () {
+                                  setState(() {
+                                    createTaskMode = true;
+                                  });
+                                },
+                              ),
+                              PopupMenuButton<int>(
+                                icon: Icon(Icons.more_vert),
+                                initialValue: 0,
+                                onSelected: (int index) async {
+                                  switch (index) {
+                                    case 0:
+                                      await context
+                                          .read<ProjectsCubit>()
+                                          .resetSubtasks(project);
+                                      break;
+                                  }
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<int>>[
+                                  const PopupMenuItem<int>(
+                                    value: 0,
+                                    child: Text('Reset tasks'),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         if (createTaskMode)
                           SubtaskForm(

@@ -45,6 +45,17 @@ class ProjectsCubit extends Cubit<ProjectsState> {
     emit(state.copyWith(projects: projects));
   }
 
+  resetSubtasks(Project project) async {
+    List<Future<dynamic>> tasks = [];
+    for (var subtask in project.subtasks.where((s) => s.isFinished)) {
+      var s = subtask.copyWith();
+      s.changeStatus();
+      tasks.add(_repository.updateSubtask(s));
+    }
+    await Future.wait(tasks);
+    await loadProjects();
+  }
+
   changeSubtaskState(Subtask subtask) async {
     try {
       var s = subtask.copyWith();

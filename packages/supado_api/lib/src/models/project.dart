@@ -18,7 +18,7 @@ class Project extends Equatable {
   final int indexNumber;
   final int projectTypeId;
 
-  @JsonKey(includeToJson: false)
+  @JsonKey(includeToJson: false, name: 'project_subtasks')
   final List<Subtask> subtasks;
   @JsonKey(includeToJson: false)
   final ProjectType? projectType;
