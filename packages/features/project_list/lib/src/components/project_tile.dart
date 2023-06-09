@@ -14,8 +14,27 @@ class ProjectTile extends StatefulWidget {
   State<ProjectTile> createState() => _ProjectTileState();
 }
 
-class _ProjectTileState extends State<ProjectTile> {
+class _ProjectTileState extends State<ProjectTile>
+    with TickerProviderStateMixin {
   bool expandSubtask = false;
+
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 500),
+    vsync: this,
+  );
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.fastOutSlowIn,
+  );
+
+  void _toggleContainer() {
+    expandSubtask = !expandSubtask;
+    if (expandSubtask) {
+      _controller.forward();
+    } else {
+      _controller.animateBack(0, duration: Duration(milliseconds: 500));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +63,21 @@ class _ProjectTileState extends State<ProjectTile> {
                         )
                     ],
                   ),
-                  IconButton(
-                    icon: Icon(
-                        expandSubtask ? Icons.expand_less : Icons.expand_more),
-                    onPressed: () {
-                      setState(() {
-                        expandSubtask = !expandSubtask;
-                      });
-                    },
-                  )
+                  if (widget.project.subtasksCount != 0)
+                    IconButton(
+                      icon: Icon(expandSubtask
+                          ? Icons.expand_less
+                          : Icons.expand_more),
+                      onPressed: () {
+                        _toggleContainer();
+                      },
+                    )
                 ],
               ),
-              if (expandSubtask) SubtasksList(project: widget.project)
+              SizeTransition(
+                sizeFactor: _animation,
+                child: SubtasksList(project: widget.project),
+              )
             ],
           ),
           onTap: widget.onTap,
